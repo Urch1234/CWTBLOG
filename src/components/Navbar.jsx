@@ -40,7 +40,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
         <Link className="navbar-brand" to="/" aria-label="Home">
-          Blog
+          CWTBlog
         </Link>
         <button
           className="navbar-toggler"
