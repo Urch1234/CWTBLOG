@@ -42,7 +42,7 @@ function Home() {
     };
 
     fetchPosts();
-  }, [navigate]); // Ensure navigate is updated
+  }, [navigate, promptSignIn]); // Ensure navigate is updated
 
   if (loading) {
     console.log("Loading posts...");

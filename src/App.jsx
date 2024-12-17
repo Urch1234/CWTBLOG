@@ -4,6 +4,9 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import PostCreation from './pages/PostCreation';
+import SingleView from "./components/SingleView";
+import PostsList from "./components/PostsList";
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -27,6 +30,9 @@ function App() {
             }
           />
           <Route path="*" element={<NotFound />} /> {/* Fallback for invalid routes */}
+          <Route path="/posts/new" element={<ProtectedRoute><PostCreation /></ProtectedRoute>} />
+          <Route path="/posts/:id" element={<SingleView />} />
+          <Route path="/posts" element={<PostsList />} />
         </Routes>
       </div>
     </Router>

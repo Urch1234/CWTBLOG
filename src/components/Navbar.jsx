@@ -1,46 +1,57 @@
 import { Link, useNavigate } from "react-router-dom";
+import { getToken, logout } from "../utils/tokenUtils";
 
 function Navbar() {
-  const navigate = useNavigate(); // Added navigate hook
+  const navigate = useNavigate();
+  const token = getToken();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    alert("Logged out successfully!");
-    navigate("/login"); // Redirect to login page after logout
+    logout(); // Remove token and redirect
+    navigate("/login"); // Explicit redirection for smooth navigation
   };
 
   const renderAuthLinks = () => {
-    return !localStorage.getItem("token") ? (
+    if (!token) {
+      return (
+        <>
+          <li className="nav-item">
+            <Link className="nav-link" to="/login" aria-label="Login">
+              Login
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/register" aria-label="Register">
+              Register
+            </Link>
+          </li>
+        </>
+      );
+    }
+    return (
       <>
         <li className="nav-item">
-          <Link className="nav-link" to="/login" aria-label="Login">
-            Login
+          <Link className="nav-link" to="/posts/new" aria-label="Create Post">
+            Create Post
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/register" aria-label="Register">
-            Register
-          </Link>
+          <button
+            className="btn btn-danger"
+            onClick={handleLogout}
+            aria-label="Logout"
+          >
+            Logout
+          </button>
         </li>
       </>
-    ) : (
-      <li className="nav-item">
-        <button
-          className="btn btn-danger"
-          onClick={handleLogout}
-          aria-label="Logout"
-        >
-          Logout
-        </button>
-      </li>
     );
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
         <Link className="navbar-brand" to="/" aria-label="Home">
-          CWTBlog
+          Blog App
         </Link>
         <button
           className="navbar-toggler"

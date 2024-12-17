@@ -1,13 +1,12 @@
-import { Navigate } from 'react-router-dom';
-import PropTypes from "prop-types"
+import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/login" />;
-}
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
+  if (!token) {
+    alert("You need to log in to access this page.");
+    return <Navigate to="/login" replace />;
+  }
+  return children;
 };
 
 export default ProtectedRoute;

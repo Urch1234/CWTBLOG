@@ -1,24 +1,26 @@
 import API from "./api";
+import { setToken } from "./tokenUtils";
 
-// Common function to handle authentication
-export const handleAuth = async (endpoint, data) => {
+// Common function for handling authentication
+export const handleAuth = async (endpoint, data, saveToken = false) => {
   try {
     const response = await API.post(endpoint, data);
-    console.log("API Response:", response.data); // Log the response for debugging
-    if (response.data?.key) {
-      localStorage.setItem("token", response.data.key);
+    if (saveToken && response.data?.key) {
+      setToken(response.data.key);
     }
-    return response.data; // Return the response on success
+    return response.data;
   } catch (error) {
-    console.error("Error during registration:", error.response?.data); // Log errors for debugging
+    console.error("Authentication Error:", error.response?.data);
     throw error.response?.data || { message: "Authentication failed." };
   }
 };
 
-// Login function
-export const login = (email, password) =>
-  handleAuth("dj-rest-auth/login/", { email, password });
+// Login: Save token after successful authentication
+export const login = async (email, password) => {
+  return handleAuth("dj-rest-auth/login/", { email, password }, true);
+};
 
-// Register function
-export const register = (data) =>
-  handleAuth("dj-rest-auth/registration/", data);
+// Register: Do not save token on registration
+export const register = async (data) => {
+  return handleAuth("dj-rest-auth/registration/", data, false);
+};
